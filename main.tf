@@ -25,8 +25,11 @@ resource "aws_security_group" "allow_ssh" {
 
   egress {
     from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
+    to_port          = 65535
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+
   }
 
   tags = {
@@ -40,7 +43,7 @@ resource "aws_key_pair" "webserver" {
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-0b54418bdd76353ce"
+  ami           = "ami-022e1a32d3f742bd8"
   instance_type = "t2.micro"
 
   tags = {
