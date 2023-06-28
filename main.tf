@@ -47,7 +47,7 @@ resource "aws_instance" "web" {
   instance_type = "t2.micro"
 
   tags = {
-    Name = "Webserver"
+    Name = "webserver"
   }
 
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
