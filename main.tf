@@ -62,4 +62,12 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   subnet_id = aws_subnet.public.id
   key_name = aws_key_pair.webserver.key_name
+  user_data = <<-EOT
+                #!/bin/bash
+                yum update -y
+                yum install -y docker
+                systemctl start docker
+                systemctl enable docker
+                usermod -a -G docker ec2-user
+              EOT
 }
