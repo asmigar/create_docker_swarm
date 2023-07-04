@@ -63,11 +63,13 @@ resource "aws_instance" "web" {
   subnet_id = aws_subnet.public.id
   key_name = aws_key_pair.webserver.key_name
   user_data = <<-EOT
-                #!/bin/bash
-                yum update -y
-                yum install -y docker
-                systemctl start docker
-                systemctl enable docker
-                usermod -a -G docker ec2-user
+		#!/bin/bash
+		yum update -y
+		yum install -y docker
+		systemctl start docker
+		systemctl enable docker
+		usermod -a -G docker ec2-user
+		curl -SL https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+		chmod +x /usr/local/bin/docker-compose
               EOT
 }
