@@ -60,9 +60,9 @@ resource "aws_instance" "manager" {
   }
 
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-  subnet_id = aws_subnet.public.id
-  key_name = aws_key_pair.webserver.key_name
-  user_data = <<-EOT
+  subnet_id              = aws_subnet.public.id
+  key_name               = aws_key_pair.webserver.key_name
+  user_data              = <<-EOT
 		#!/bin/bash
 		yum update -y
 		yum install -y docker
@@ -71,5 +71,29 @@ resource "aws_instance" "manager" {
 		usermod -a -G docker ec2-user
 		curl -SL https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
 		chmod +x /usr/local/bin/docker-compose
-              EOT
+		EOT
+}
+
+resource "aws_instance" "worker" {
+  count         = 2
+  ami           = "ami-022e1a32d3f742bd8"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "worker-${count.index}"
+  }
+
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  subnet_id              = aws_subnet.public.id
+  key_name               = aws_key_pair.webserver.key_name
+  user_data              = <<-EOT
+		#!/bin/bash
+		yum update -y
+		yum install -y docker
+		systemctl start docker
+		systemctl enable docker
+		usermod -a -G docker ec2-user
+		curl -SL https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+		chmod +x /usr/local/bin/docker-compose
+		EOT
 }

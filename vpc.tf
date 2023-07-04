@@ -3,8 +3,8 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block       = var.vpc_cidr_block
-  instance_tenancy = "default"
+  cidr_block           = var.vpc_cidr_block
+  instance_tenancy     = "default"
   enable_dns_hostnames = true
 
   tags = {
@@ -40,7 +40,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name  = "public_subnet"
+    Name = "public_subnet"
   }
 }
 
