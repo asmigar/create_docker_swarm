@@ -1,1 +1,1 @@
-enable_workers = false
+enable_workers = true
