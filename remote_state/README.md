@@ -8,7 +8,7 @@
 ```bash
 cd remote_state; terraform init; terraform apply
 
-2. Apply the `ecs` terraform project.
+2. Apply the `infra` terraform project.
 ```bash
 cd infra; terraform init; terraform apply
 ```
