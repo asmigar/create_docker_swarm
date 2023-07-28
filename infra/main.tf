@@ -59,8 +59,12 @@ resource "tls_private_key" "this" {
   rsa_bits  = 4096
 
   provisioner "local-exec" {
-    command = "echo '${self.private_key_pem}' > ~/.ssh/docker_swarm.pem; chmod 400 ~/.ssh/docker_swarm.pem"
-    quiet = true
+    command = "echo '${self.private_key_openssh}' > ~/.ssh/docker_swarm.pem; chmod 400 ~/.ssh/docker_swarm.pem"
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "rm -rf ~/.ssh/docker_swarm.pem"
   }
 }
 
