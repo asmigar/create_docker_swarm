@@ -64,14 +64,14 @@ resource "tls_private_key" "this" {
   }
 }
 
-resource "aws_key_pair" "webserver" {
-  key_name   = "webserver"
+resource "aws_key_pair" "this" {
+  key_name   = "docker_swarm"
   public_key = tls_private_key.this.public_key_openssh
 }
 
 resource "aws_instance" "manager" {
   ami           = "ami-022e1a32d3f742bd8"
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
 
   tags = {
     Name = "manager"
@@ -79,7 +79,7 @@ resource "aws_instance" "manager" {
 
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   subnet_id              = aws_subnet.public.id
-  key_name               = aws_key_pair.webserver.key_name
+  key_name               = aws_key_pair.this.key_name
   user_data              = <<-EOT
 		#!/bin/bash
 		yum update -y
@@ -92,10 +92,11 @@ resource "aws_instance" "manager" {
 		EOT
 }
 
+
 resource "aws_instance" "worker" {
   count         = var.enable_workers ? 2 : 0
   ami           = "ami-022e1a32d3f742bd8"
-  instance_type = "t3.micro"
+  instance_type = var.instance_type
 
   tags = {
     Name = "worker-${count.index}"
@@ -103,7 +104,7 @@ resource "aws_instance" "worker" {
 
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   subnet_id              = aws_subnet.public.id
-  key_name               = aws_key_pair.webserver.key_name
+  key_name               = aws_key_pair.this.key_name
   user_data              = <<-EOT
 		#!/bin/bash
 		yum update -y
