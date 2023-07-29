@@ -9,6 +9,10 @@ provider "aws" {
   }
 }
 
+data "http" "my_public_ip" {
+  url = "https://ifconfig.me"
+}
+
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_tls"
   description = "Allow TLS inbound traffic"
@@ -28,8 +32,7 @@ resource "aws_security_group" "allow_ssh" {
     from_port        = 3000
     to_port          = 3000
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = ["${data.http.my_public_ip.response_body}/32"]
   }
 
   ingress {
