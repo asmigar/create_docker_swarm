@@ -18,3 +18,9 @@ variable "instance_type" {
   default = "t2.micro"
   description = "AWS instance type to be used for docker swarm manager and worker node"
 }
+
+variable "shh_key_name" {
+  type        = string
+  default     = "docker_swarm"
+  description = "ssh key name to be created in EC2 and store in ~/.ssh folder"
+}

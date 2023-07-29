@@ -57,20 +57,20 @@ resource "aws_security_group" "allow_ssh" {
 resource "tls_private_key" "this" {
   algorithm = "RSA"
   rsa_bits  = 4096
-
-  provisioner "local-exec" {
-    command = "echo '${self.private_key_openssh}' > ~/.ssh/docker_swarm.pem; chmod 400 ~/.ssh/docker_swarm.pem"
-  }
-
-  provisioner "local-exec" {
-    when = destroy
-    command = "rm -rf ~/.ssh/docker_swarm.pem"
-  }
 }
 
 resource "aws_key_pair" "this" {
   key_name   = "docker_swarm"
   public_key = tls_private_key.this.public_key_openssh
+
+  provisioner "local-exec" {
+    command = "echo '${tls_private_key.this.private_key_openssh}' > ~/.ssh/${self.key_name}.pem; chmod 400 ~/.ssh/${self.key_name}.pem"
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = "rm -rf ~/.ssh/${self.key_name}.pem"
+  }
 }
 
 resource "aws_instance" "manager" {
