@@ -4,11 +4,13 @@ output "ssh_command_manager_node" {
 }
 
 output "ssh_command_worker_nodes" {
-  value       = <<-SSHCOMMAND
+  value = (var.enable_workers ? <<-SSHCOMMAND
   %{for dns in aws_instance.worker[*].public_dns}
   ssh -i ~/.ssh/${aws_key_pair.this.key_name}.pem ec2-user@${dns}
   %{endfor}
   SSHCOMMAND
+  : null)
+
   description = "ssh command for connect to the worker node"
 }
 

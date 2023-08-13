@@ -9,13 +9,13 @@ variable "public_subnet_cidr_block" {
 }
 
 variable "enable_workers" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "instance_type" {
-  type = string
-  default = "t2.micro"
+  type        = string
+  default     = "t2.micro"
   description = "AWS instance type to be used for docker swarm manager and worker node"
 }
 

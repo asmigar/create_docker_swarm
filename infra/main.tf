@@ -28,21 +28,21 @@ resource "aws_security_group" "allow_ssh" {
   }
 
   ingress {
-    description      = "http"
-    from_port        = 3000
-    to_port          = 3000
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    description = "http"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    description      = "docker swarm"
-    from_port        = 2377
-    to_port          = 2377
-    protocol         = "tcp"
-    cidr_blocks      = [aws_subnet.public.cidr_block]
+    description = "docker swarm"
+    from_port   = 2377
+    to_port     = 2377
+    protocol    = "tcp"
+    cidr_blocks = [aws_subnet.public.cidr_block]
   }
-  
+
   egress {
     from_port        = 0
     to_port          = 65535
