@@ -24,3 +24,9 @@ variable "shh_key_name" {
   default     = "docker_swarm"
   description = "ssh key name to be created in EC2 and store in ~/.ssh folder"
 }
+
+variable "workers_count" {
+  type = number
+  default = 2
+  description = "number of worker nodes"
+}

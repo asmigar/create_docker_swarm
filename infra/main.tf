@@ -100,7 +100,7 @@ resource "aws_instance" "manager" {
 
 
 resource "aws_instance" "worker" {
-  count         = var.enable_workers ? 2 : 0
+  count         = var.enable_workers ? var.workers_count : 0
   ami           = "ami-022e1a32d3f742bd8"
   instance_type = var.instance_type
 
