@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "us-east-1"
-  profile = "default"
+  profile = "asmigar"
   default_tags {
     tags = {
       Organisation = "Self"
@@ -10,8 +10,12 @@ provider "aws" {
 }
 
 
+resource "random_id" "s3_suffix" {
+  byte_length = 4
+}
+
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "create-docker-swarm-terraform-state"
+  bucket = "create-docker-swarm-terraform-state-${random_id.s3_suffix.hex}"
 
   # Prevent accidental deletion of this S3 bucket
   lifecycle {

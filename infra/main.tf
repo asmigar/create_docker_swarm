@@ -1,14 +1,3 @@
-provider "aws" {
-  region  = "us-east-1"
-  profile = "default"
-  default_tags {
-    tags = {
-      Organisation = "Asmigar"
-      Environment  = "dev"
-    }
-  }
-}
-
 data "http" "my_public_ip" {
   url = "https://ipv4.icanhazip.com"
 }
